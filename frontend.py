@@ -6,7 +6,7 @@ Created on Fri Sep 29 11:39:48 2017
 """
 from tkinter import *
 from tkinter import messagebox
-import backend
+import backend2
 
 def get_selected_row(event):
     global selected_tuple
@@ -23,37 +23,57 @@ def get_selected_row(event):
 
 def view_command():
     list1.delete(0,END)
-    for row in backend.view():
+    for row in backend2.view():
         list1.insert(END,row)
 
 def search_command():
     list1.delete(0,END)
-    for row in backend.search(title_text.get(),author_text.get(),quantity_text.get(),price_text.get()):
+    #quantity_int=int(quantity_text.get())
+    #price_int=int(price_text.get())
+    for row in backend2.search(title_text.get(),author_text.get(),quantity_text.get(),price_text.get()):
         list1.insert(1,row)
 
 def add_command():
-    backend.insert(title_text.get(),author_text.get(),quantity_text.get(),price_text.get())
+    quantity_int=int(quantity_text.get())
+    price_int=int(price_text.get())
+    backend2.insert(title_text.get(),author_text.get(),quantity_int,price_int)
     list1.delete(0,END)
-    list1.insert(END,(title_text.get(),author_text.get(),quantity_text.get(),price_text.get()))
+    list1.insert(END,(title_text.get(),author_text.get(),quantity_int,price_int))
 
 def delete_command():
-    backend.delete(selected_tuple[0])
+    backend2.delete(selected_tuple[0])
 
 def update_command():
-    backend.update(selected_tuple[0],title_text.get(),author_text.get(),quantity_text.get(),price_text.get())
+    quantity_int=int(quantity_text.get())
+    price_int=int(price_text.get())
+    backend2.update(selected_tuple[0],title_text.get(),author_text.get(),quantity_int,price_int)
 
 def buy_command():
     temp1=quantity_text.get()
     val1=int(temp1)
+    price_int=int(price_text.get())
     if val1 == 0:
-        backend.delete(selected_tuple[0])
+        backend2.delete(selected_tuple[0])
         messagebox.showerror("ERROR!!!","Out of stock!!!")
     else:
-        val1=val1-1
-        new_quantity=str(val1)
-        backend.update(selected_tuple[0],title_text.get(),author_text.get(),new_quantity,price_text.get())
+        new_quantity=val1-1
+        backend2.update(selected_tuple[0],title_text.get(),author_text.get(),new_quantity,price_int)
 
+def total_command():
+    value=backend2.total()
+    list1.delete(0,END) 
+    list1.insert(1,value)
 
+def max_command():
+    value=backend2.maxval()
+    list1.delete(0,END) 
+    list1.insert(1,value)
+    
+def min_command():
+    value=backend2.minval()
+    list1.delete(0,END) 
+    list1.insert(1,value)   
+    
 window=Tk()
 
 window.wm_title("BookStore")
@@ -115,8 +135,14 @@ b5.grid(row=6,column=3)
 b6=Button(window,text="Buy",width=12,command=buy_command)
 b6.grid(row=7,column=3)
 
-b7=Button(window,text="Close",width=12,command=window.destroy)
-b7.grid(row=8,column=0,columnspan=3)
+b7=Button(window,text="Total",width=12,command=total_command)
+b7.grid(row=8,column=0)
+
+b8=Button(window,text="Max. Price",width=12,command=max_command)
+b8.grid(row=8,column=1,columnspan=2)
+
+b9=Button(window,text="Min. Price",width=12,command=min_command)
+b9.grid(row=8,column=3)
 
 window.mainloop()
 
