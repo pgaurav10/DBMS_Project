@@ -6,7 +6,7 @@ Created on Fri Sep 29 11:39:48 2017
 """
 from tkinter import *
 from tkinter import messagebox
-import backend2
+import backend
 
 def get_selected_row(event):
     global selected_tuple
@@ -23,54 +23,54 @@ def get_selected_row(event):
 
 def view_command():
     list1.delete(0,END)
-    for row in backend2.view():
+    for row in backend.view():
         list1.insert(END,row)
 
 def search_command():
     list1.delete(0,END)
     #quantity_int=int(quantity_text.get())
     #price_int=int(price_text.get())
-    for row in backend2.search(title_text.get(),author_text.get(),quantity_text.get(),price_text.get()):
+    for row in backend.search(title_text.get(),author_text.get(),quantity_text.get(),price_text.get()):
         list1.insert(1,row)
 
 def add_command():
     quantity_int=int(quantity_text.get())
     price_int=int(price_text.get())
-    backend2.insert(title_text.get(),author_text.get(),quantity_int,price_int)
+    backend.insert(title_text.get(),author_text.get(),quantity_int,price_int)
     list1.delete(0,END)
     list1.insert(END,(title_text.get(),author_text.get(),quantity_int,price_int))
 
 def delete_command():
-    backend2.delete(selected_tuple[0])
+    backend.delete(selected_tuple[0])
 
 def update_command():
     quantity_int=int(quantity_text.get())
     price_int=int(price_text.get())
-    backend2.update(selected_tuple[0],title_text.get(),author_text.get(),quantity_int,price_int)
+    backend.update(selected_tuple[0],title_text.get(),author_text.get(),quantity_int,price_int)
 
 def buy_command():
     temp1=quantity_text.get()
     val1=int(temp1)
     price_int=int(price_text.get())
     if val1 == 0:
-        backend2.delete(selected_tuple[0])
+        backend.delete(selected_tuple[0])
         messagebox.showerror("ERROR!!!","Out of stock!!!")
     else:
         new_quantity=val1-1
-        backend2.update(selected_tuple[0],title_text.get(),author_text.get(),new_quantity,price_int)
+        backend.update(selected_tuple[0],title_text.get(),author_text.get(),new_quantity,price_int)
 
 def total_command():
-    value=backend2.total()
+    value=backend.total()
     list1.delete(0,END) 
     list1.insert(1,value)
 
 def max_command():
-    value=backend2.maxval()
+    value=backend.maxval()
     list1.delete(0,END) 
     list1.insert(1,value)
     
 def min_command():
-    value=backend2.minval()
+    value=backend.minval()
     list1.delete(0,END) 
     list1.insert(1,value)   
     
